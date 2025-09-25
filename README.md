@@ -1,98 +1,284 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# AceInterview Backend Server
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A robust NestJS backend server for the AceInterview application, featuring secure authentication, user management, and interview preparation tools.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Convex](https://img.shields.io/badge/convex-FF6B6B?style=for-the-badge&logo=convex&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 
-## Description
+## 🚀 Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- ✅ **Secure Authentication** - JWT-based authentication with BetterAuth integration
+- ✅ **User Management** - Complete user registration, login, and profile management
+- ✅ **Password Security** - bcrypt encryption with salt rounds for secure password storage
+- ✅ **Session Management** - Token-based sessions with automatic cleanup
+- ✅ **Real-time Database** - Convex DB for scalable, real-time data operations
+- ✅ **Type Safety** - Full TypeScript support with strict type checking
+- ✅ **Input Validation** - Comprehensive DTO validation with class-validator
+- ✅ **CORS Support** - Configured for frontend integration
 
-## Project setup
+## 🏗️ Architecture
 
-```bash
-$ npm install
+### Technology Stack
+
+- **Framework**: [NestJS](https://nestjs.com/) - A progressive Node.js framework
+- **Database**: [Convex](https://www.convex.dev/) - Real-time database with TypeScript support
+- **Authentication**: [BetterAuth](https://better-auth.com/) + JWT tokens
+- **Password Hashing**: [bcryptjs](https://www.npmjs.com/package/bcryptjs)
+- **Validation**: [class-validator](https://github.com/typestack/class-validator)
+- **Language**: TypeScript with strict type checking
+
+### Authentication Flow
+
+The authentication system uses **BetterAuth** principles with custom JWT implementation:
+
+1. **User Registration** - Secure password hashing with bcrypt
+2. **JWT Token Generation** - 24-hour expiration tokens
+3. **Session Management** - Database-stored sessions for security
+4. **Token Validation** - JWT strategy with Passport.js
+5. **Automatic Cleanup** - Expired sessions are automatically removed
+
+### Database Schema (Convex)
+
+```typescript
+// User Table
+users: {
+  email: string,           // Unique user email (indexed)
+  name: string,           // User's display name
+  hashedPassword: string, // bcrypt hashed password
+  emailVerified: boolean, // Email verification status
+  createdAt: number,      // Unix timestamp
+  updatedAt: number       // Unix timestamp
+}
+
+// Sessions Table
+sessions: {
+  userId: string,     // Reference to user ID
+  token: string,      // JWT token (indexed)
+  expiresAt: number, // Token expiration timestamp
+  createdAt: number  // Session creation timestamp
+}
 ```
 
-## Compile and run the project
+## 🛠️ Quick Start
 
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn package manager
+- Convex account (for database)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd server-aceinterview
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   JWT_SECRET=your-super-secret-jwt-key-here
+   CONVEX_DEPLOYMENT=your-convex-deployment-url
+   ```
+
+4. **Deploy Convex schema**
+   ```bash
+   npx convex dev
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run start:dev
+   ```
+
+The server will start on `http://localhost:3001` (NestJS)
+Convex database will run on `http://localhost:3000`
+
+## 📡 API Endpoints
+
+### Authentication Routes
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/auth/signup` | Register new user | ❌ |
+| `POST` | `/auth/signin` | User login | ❌ |
+| `GET` | `/auth/profile` | Get user profile | ✅ |
+| `GET` | `/auth/me` | Get current user | ✅ |
+| `POST` | `/auth/signout` | User logout | ✅ |
+
+### Request/Response Examples
+
+#### Sign Up
 ```bash
-# development
-$ npm run start
+POST /auth/signup
+Content-Type: application/json
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "password": "securePassword123"
+}
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+**Response:**
+```json
+{
+  "user": {
+    "id": "user_123",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "emailVerified": false
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+#### Sign In
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+POST /auth/signin
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**Response:**
+```json
+{
+  "user": {
+    "id": "user_123",
+    "email": "user@example.com",
+    "name": "John Doe"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
 
-## Resources
+#### Get Profile (Protected Route)
+```bash
+GET /auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+**Response:**
+```json
+{
+  "id": "user_123",
+  "email": "user@example.com",
+  "name": "John Doe",
+  "emailVerified": false,
+  "createdAt": 1704067200000,
+  "updatedAt": 1704067200000
+}
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🛠️ Development Commands
 
-## Support
+```bash
+# Development with hot reload
+npm run start:dev
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Production build
+npm run build
+npm run start:prod
 
-## Stay in touch
+# Linting and formatting
+npm run lint
+npm run format
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Testing
+npm run test
+npm run test:e2e
+npm run test:cov
+```
 
-## License
+## 🏗️ Project Structure
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```
+server-aceinterview/
+├── convex/                    # Convex database functions
+│   ├── schema.ts             # Database schema definitions
+│   ├── users.ts              # User & session database functions
+│   └── _generated/           # Auto-generated Convex types
+├── src/
+│   ├── auth/                 # Authentication module
+│   │   ├── dto/             # Data transfer objects
+│   │   ├── auth.controller.ts # Auth REST endpoints
+│   │   ├── auth.service.ts   # Auth business logic
+│   │   ├── auth.module.ts    # Auth module config
+│   │   ├── jwt.strategy.ts   # JWT authentication strategy
+│   │   └── jwt-auth.guard.ts # JWT route guard
+│   ├── convex/              # Convex integration
+│   │   └── convex.service.ts # Convex database service
+│   ├── app.module.ts        # Main application module
+│   └── main.ts              # Application bootstrap
+├── test/                    # E2E tests
+├── .env                     # Environment variables
+├── package.json            # Dependencies and scripts
+└── README.md               # This file
+```
+
+## 🔒 Security Features
+
+- **Password Hashing**: bcrypt with salt rounds for secure password storage
+- **JWT Tokens**: Stateless authentication with 24-hour expiration
+- **Session Management**: Server-side session tracking for enhanced security
+- **Input Validation**: Comprehensive validation using class-validator
+- **CORS Configuration**: Properly configured for frontend integration
+- **Environment Variables**: Sensitive data stored in environment variables
+
+## 🚀 Deployment
+
+### Environment Variables for Production
+
+```env
+JWT_SECRET=your-super-secure-production-jwt-secret
+CONVEX_DEPLOYMENT=https://your-production-convex-deployment.convex.cloud
+NODE_ENV=production
+PORT=3001
+```
+
+### Build and Deploy
+
+```bash
+# Build the application
+npm run build
+
+# Start in production mode
+npm run start:prod
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+If you have any questions or need help, please:
+
+1. Check the [NestJS Documentation](https://docs.nestjs.com)
+2. Review the [Convex Documentation](https://docs.convex.dev)
+3. Open an issue in this repository
+4. Contact the development team
+
+---
+
+**Made with ❤️ for AceInterview - Helping you ace your next interview!**
