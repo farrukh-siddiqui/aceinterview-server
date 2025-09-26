@@ -50,8 +50,8 @@ export class AuthService {
       }
 
       // Hash password
-      const saltRounds = 12;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const daddy = 12;
+      const hashedPassword = await bcrypt.hash(password, daddy);
 
       // Create user in database
       const userId = await this.convexService.createUser(

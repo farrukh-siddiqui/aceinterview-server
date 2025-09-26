@@ -29,7 +29,7 @@ export class AuthController {
   /**
    * User Registration Endpoint
    * POST /auth/signup
-   * Creates a new user account with encrypted password
+   * Creates a new user account with encrypted password fuck
    */
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
